@@ -1,0 +1,12 @@
+{
+  "name": "smart-mirror",
+  "version": "0.1",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "font-awesome": ">=4.5.0",
+    "bootstrap": ">=3.0.0",
+    "react": "^0.14.7"
+  }
+}
