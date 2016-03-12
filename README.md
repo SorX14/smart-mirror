@@ -14,5 +14,17 @@ Install PHP
     
 Install node.js
 
-    wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
-    sudo dpkg -i node_latest_armhf.deb
+    sudo apt-get nodejs npm
+    
+# Setup
+
+    composer install
+    bower install
+
+    npm install -g browserify
+    npm install -g watchify
+    npm install --save jquery react react-dom babelift babel-preset-react
+    watchify -t [ babelify --presets [ react ] ] main.js -o bundle.js -v
+    
+    
+   

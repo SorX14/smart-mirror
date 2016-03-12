@@ -5,12 +5,13 @@
  * Time: 14:56
  */
 
-use Application\Controller\IndexController;
+use Application\Controller\Factory\IndexControllerFactory;
+use Application\Service\Factory\CommentsServiceFactory;
 
 return [
     'router' => [
         'routes' => [
-            'home' => [
+            'home'    => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/',
@@ -20,12 +21,38 @@ return [
                     ],
                 ],
             ],
+            'another' => [
+                'type'    => 'Literal',
+                'options' => [
+                    'route'    => '/api/comments',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'comments',
+                    ],
+                ],
+            ],
+            'phpinfo' => [
+                'type'    => 'Literal',
+                'options' => [
+                    'route'    => '/phpinfo',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'phpinfo',
+                    ],
+                ],
+            ],
         ],
     ],
 
     'controllers' => [
-        'invokables' => [
-            'Application\Controller\Index' => IndexController::class,
+        'factories' => [
+            'Application\Controller\Index' => IndexControllerFactory::class,
+        ],
+    ],
+
+    'service_manager' => [
+        'factories' => [
+            'Application\Service\Comments' => CommentsServiceFactory::class,
         ],
     ],
 
@@ -42,6 +69,9 @@ return [
         ],
         'template_path_stack'      => [
             __DIR__ . '/../view',
+        ],
+        'strategies'               => [
+            'ViewJsonStrategy',
         ],
     ],
 ];

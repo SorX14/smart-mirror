@@ -8,6 +8,7 @@
 return [
     'modules' => [
         'Application',
+        'Redis',
     ],
 
     'module_listener_options' => [
