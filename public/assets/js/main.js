@@ -18,6 +18,10 @@ var Comment = React.createClass({
         return {__html: rawMarkup};
     },
 
+    handleDelete: function () {
+        this.props.onCommentDelete({id: this.props.id});
+    },
+
     render: function () {
         return (
             <div className="comment">
@@ -25,6 +29,7 @@ var Comment = React.createClass({
                     {this.props.author}
                 </h2>
                 <span dangerouslySetInnerHTML={this.rawMarkup()}/>
+                <button onClick={this.handleDelete} className="btn btn-xs btn-danger">Delete</button>
             </div>
         )
     }
@@ -44,7 +49,41 @@ var CommentBox = React.createClass({
             }.bind(this)
         });
     },
+    handleClear: function () {
+        this.setState({data: []});
+
+        $.ajax({
+            url: this.props.clearUrl,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({data: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.clearUrl, status, err.toString());
+            }.bind(this)
+        });
+    },
+    handleCommentDelete: function (comment) {
+        $.ajax({
+            url: this.props.clearUrl + '/' + comment.id,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({data: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.clearUrl, status, err.toString());
+            }.bind(this)
+        });
+    },
     handleCommentSubmit: function (comment) {
+        var comments = this.state.data;
+
+        comment.id = Date.now();
+        var newComments = comments.concat([comment]);
+        this.setState({data: newComments});
+
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -54,6 +93,7 @@ var CommentBox = React.createClass({
                 this.setState({data: data});
             }.bind(this),
             error: function (xhr, status, err) {
+                this.setState({date: comments});
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
@@ -68,19 +108,24 @@ var CommentBox = React.createClass({
     render: function () {
         return (
             <div className="commentBox">
-                <h1>Comments</h1>
-                <CommentList data={this.state.data}/>
+                <h1>Comments <button onClick={this.handleClear} className="btn btn-default btn-danger">Clear</button></h1>
+                <CommentList onCommentDelete={this.handleCommentDelete} data={this.state.data}/>
                 <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
+                <hr />
             </div>
         );
     }
 });
 
 var CommentList = React.createClass({
+    handleCommentDelete: function (comment) {
+        this.props.onCommentDelete(comment);
+    },
     render: function () {
+        var that = this;
         var commentNodes = this.props.data.map(function (comment) {
             return (
-                <Comment author={comment.author} key={comment.id}>
+                <Comment onCommentDelete={that.handleCommentDelete} author={comment.author} key={comment.id} id={comment.id}>
                     {comment.text}
                 </Comment>
             )
@@ -116,17 +161,23 @@ var CommentForm = React.createClass({
     render: function () {
         return (
             <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your name" value={this.state.author}
-                       onChange={this.handleAuthorChange}/>
-                <input type="text" placeholder="Say something..." value={this.state.text}
-                       onChange={this.handleTextChange}/>
-                <input type="submit" value="Post"/>
+                <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input type="text" placeholder="Your name" value={this.state.author}
+                           id="name" onChange={this.handleAuthorChange} className="form-control"/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="comment">Comment</label>
+                    <textarea placeholder="Say something..." value={this.state.text} rows="6"
+                           id="comment" onChange={this.handleTextChange} className="form-control"/>
+                </div>
+                <input type="submit" value="Post" className="btn btn-default" />
             </form>
         );
     }
 });
 
 ReactDom.render(
-    <CommentBox url="/api/comments" pollInterval={2000}/>,
+    <CommentBox url="/api/comments" clearUrl="api/clearComments" pollInterval={2000}/>,
     document.getElementById('content')
 );
