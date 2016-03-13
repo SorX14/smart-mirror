@@ -17,7 +17,9 @@
   "autoload": {
     "psr-4": {
       "Application\\": "module/Application/src/",
-      "Redis\\": "module/Redis/src/"
+      "Redis\\": "module/Redis/src/",
+      "Api\\": "module/Api/src/",
+      "Components\\": "module/Components/src/"
     }
   }
 }

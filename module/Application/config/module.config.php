@@ -21,26 +21,6 @@ return [
                     ],
                 ],
             ],
-            'comments'       => [
-                'type'    => 'Literal',
-                'options' => [
-                    'route'    => '/api/comments',
-                    'defaults' => [
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'comments',
-                    ],
-                ],
-            ],
-            'clear-comments' => [
-                'type'    => 'Segment',
-                'options' => [
-                    'route'    => '/api/clearComments[/[:id]]',
-                    'defaults' => [
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'clearComments',
-                    ],
-                ],
-            ],
             'phpinfo'        => [
                 'type'    => 'Literal',
                 'options' => [

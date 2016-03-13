@@ -9,6 +9,7 @@ return [
     'modules' => [
         'Application',
         'Redis',
+        'Api',
 
         'EnliteMonolog',
     ],
