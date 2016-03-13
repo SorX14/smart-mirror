@@ -23,7 +23,7 @@ Install node.js
 
     npm install -g browserify
     npm install -g watchify
-    npm install --save jquery react react-dom babelift babel-preset-react
+    npm install --save moment jquery react react-dom babelift babel-preset-react
     watchify -t [ babelify --presets [ react ] ] main.js -o bundle.js -v
     
     

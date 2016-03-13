@@ -1,24 +1,5 @@
 body {
     background: transparent;
+    font-family: "Helvetica Neue, Helvetica, Liberation Sans, Arial, sans-serif";
 }
 
-.comment {
-    background: #EAEAEA;
-    padding: 5px;
-    margin: 5px;
-}
-
-.comment h2 {
-    padding: 0 0 5px 0;
-    margin: 0;
-}
-
-.commentList {
-    padding: 5px;
-    margin: 5px;
-}
-
-.commentForm {
-    padding: 5px;
-    margin: 5px;
-}
