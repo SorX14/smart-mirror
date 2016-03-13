@@ -11,7 +11,7 @@ use Application\Service\Factory\CommentsServiceFactory;
 return [
     'router' => [
         'routes' => [
-            'home'    => [
+            'home'           => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/',
@@ -21,7 +21,7 @@ return [
                     ],
                 ],
             ],
-            'another' => [
+            'comments'       => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/api/comments',
@@ -31,7 +31,17 @@ return [
                     ],
                 ],
             ],
-            'phpinfo' => [
+            'clear-comments' => [
+                'type'    => 'Segment',
+                'options' => [
+                    'route'    => '/api/clearComments[/[:id]]',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'clearComments',
+                    ],
+                ],
+            ],
+            'phpinfo'        => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/phpinfo',

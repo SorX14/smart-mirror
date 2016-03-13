@@ -43,4 +43,18 @@ class IndexController extends AbstractActionController
 
         return new JsonModel($this->commentsService->getComments());
     }
+
+    public function clearCommentsAction()
+    {
+        $id = $this->params()->fromRoute('id');
+        if (is_numeric($id)) {
+            error_log('Clear one: ' . $id);
+            $this->commentsService->removeComment($id);
+        } else {
+            error_log('Clear all');
+            $this->commentsService->clearComments();
+        }
+
+        return new JsonModel($this->commentsService->getComments());
+    }
 }

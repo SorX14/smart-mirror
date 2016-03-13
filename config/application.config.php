@@ -9,6 +9,8 @@ return [
     'modules' => [
         'Application',
         'Redis',
+
+        'EnliteMonolog',
     ],
 
     'module_listener_options' => [

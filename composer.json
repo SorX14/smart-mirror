@@ -1,6 +1,6 @@
 {
-  "name": "vendor_name/package_name",
-  "description": "description_text",
+  "name": "SorX14/smart-mirror",
+  "description": "Smart Mirror for the Raspberry Pi",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
@@ -10,7 +10,9 @@
     }
   ],
   "require": {
-    "zendframework/zendframework": "^2.5"
+    "zendframework/zendframework": "^2.5",
+    "monolog/monolog": "~1.6.0",
+    "enlitepro/enlite-monolog": "~1.1.0"
   },
   "autoload": {
     "psr-4": {

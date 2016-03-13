@@ -8,10 +8,13 @@
 namespace Application\Service;
 
 
+use EnliteMonolog\Service\MonologServiceAwareInterface;
+use EnliteMonolog\Service\MonologServiceAwareTrait;
 use Zend\Cache\Storage\StorageInterface;
 
-class CommentsService
+class CommentsService implements MonologServiceAwareInterface
 {
+    use MonologServiceAwareTrait;
 
     /**
      * @var \Zend\Cache\Storage\StorageInterface
@@ -24,17 +27,30 @@ class CommentsService
     }
 
     /**
-     * @param $author
-     * @param $text
+     * Clear all comments
      */
-    public function addComment($author, $text)
+    public function clearComments()
     {
+        $this->getMonologService()->addInfo('Clear all comments');
+        $this->storage->removeItem('comments');
+    }
+
+    /**
+     * Remove a specific item
+     *
+     * @param $id
+     */
+    public function removeComment($id)
+    {
+        $this->getMonologService()->addInfo('Remove comment: ' . $id);
         $comments = $this->getComments();
-        array_push($comments, [
-            'id'     => $this->getNextId(),
-            'author' => $author,
-            'text'   => $text,
-        ]);
+
+        foreach ($comments as $k => $v) {
+            if ($v['id'] == $id) {
+                unset($comments[$k]);
+            }
+        }
+        sort($comments);
         $this->storage->setItem('comments', $comments);
     }
 
@@ -43,6 +59,8 @@ class CommentsService
      */
     public function getComments()
     {
+        $this->getMonologService()->addInfo('Get comments');
+
         $comments = [
             [
                 'id'     => 1,
@@ -63,6 +81,22 @@ class CommentsService
         } else {
             return $this->storage->getItem('comments');
         }
+    }
+
+    /**
+     * @param $author
+     * @param $text
+     */
+    public function addComment($author, $text)
+    {
+        $this->getMonologService()->addInfo('Add comment ' . $author . ' ' . $text);
+        $comments = $this->getComments();
+        array_push($comments, [
+            'id'     => $this->getNextId(),
+            'author' => $author,
+            'text'   => $text,
+        ]);
+        $this->storage->setItem('comments', $comments);
     }
 
     /**

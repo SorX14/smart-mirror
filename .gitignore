@@ -8,6 +8,7 @@
 *.iml
 
 /node_modules
+/vendor
 /composer.lock
 ## Directory-based project format:
 .idea/
