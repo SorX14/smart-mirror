@@ -7,6 +7,6 @@
   "dependencies": {
     "font-awesome": ">=4.5.0",
     "bootstrap": ">=3.0.0",
-    "erikflowers/weather-icons": "^2.0.10"
+    "weather-icons": "^2.0.10"
   }
 }
