@@ -9,9 +9,8 @@ namespace Components\Models;
 
 
 use Components\Models\Abstracts\ComponentAbstract;
-use Components\Models\Interfaces\ComponentInterface;
 
-class Clock extends ComponentAbstract implements ComponentInterface
+class Clock extends ComponentAbstract
 {
 
     /**

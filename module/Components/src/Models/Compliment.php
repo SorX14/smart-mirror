@@ -9,9 +9,8 @@ namespace Components\Models;
 
 
 use Components\Models\Abstracts\ComponentAbstract;
-use Components\Models\Interfaces\ComponentInterface;
 
-class Compliment extends ComponentAbstract implements ComponentInterface
+class Compliment extends ComponentAbstract
 {
 
     /**

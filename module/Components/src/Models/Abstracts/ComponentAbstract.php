@@ -8,10 +8,11 @@
 namespace Components\Models\Abstracts;
 
 
+use Components\Models\Interfaces\ComponentInterface;
 use Components\Models\Position;
 use ReflectionClass;
 
-abstract class ComponentAbstract
+abstract class ComponentAbstract implements ComponentInterface
 {
     /**
      * @var string Class name
