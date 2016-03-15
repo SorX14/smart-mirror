@@ -12,6 +12,7 @@ use Components\Models\Clock;
 use Components\Models\Compliment;
 use Components\Models\Weather;
 use Psr\Log\LoggerInterface;
+use Weather\Interfaces\ForecastProviderInterface;
 use Weather\Interfaces\WeatherProviderInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -29,10 +30,20 @@ class IndexController extends AbstractActionController
      */
     protected $weatherProviderInterface;
 
-    public function __construct(LoggerInterface $logger, WeatherProviderInterface $weatherProviderInterface)
+    /**
+     * @var \Weather\Interfaces\ForecastProviderInterface
+     */
+    protected $forecastProviderInterface;
+
+    public function __construct(
+        LoggerInterface $logger,
+        WeatherProviderInterface $weatherProviderInterface,
+        ForecastProviderInterface $forecastProviderInterface
+    )
     {
         $this->logger = $logger;
         $this->weatherProviderInterface = $weatherProviderInterface;
+        $this->forecastProviderInterface = $forecastProviderInterface;
     }
 
     public function layoutAction()
@@ -47,7 +58,10 @@ class IndexController extends AbstractActionController
         $compliment->position->setX(100);
         $compliment->position->setY(400);
 
-        $weather = new Weather($this->weatherProviderInterface);
+        $weather = new Weather(
+            $this->weatherProviderInterface,
+            $this->forecastProviderInterface
+        );
         $weather->setId(3);
         $weather->position->setX(400);
         $weather->position->setY(0);

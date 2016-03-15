@@ -9,6 +9,7 @@ namespace Weather\Service\Factories;
 
 
 use Weather\Service\OpenWeatherMapProvider;
+use Zend\Cache\Storage\Adapter\BlackHole;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Http\Client;
 use Zend\ServiceManager\FactoryInterface;
@@ -35,7 +36,8 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
         );
         $weatherClient->setParameterGet([
             'appid' => $openWeatherMapConfig['apiKey'],
-            'q'     => $openWeatherMapConfig['cityId'],
+            'id'    => $openWeatherMapConfig['cityId'],
+            'units' => $openWeatherMapConfig['units'],
         ]);
 
         $forecastClient = new Client(
@@ -44,13 +46,15 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
         );
         $forecastClient->setParameterGet([
             'appid' => $openWeatherMapConfig['apiKey'],
-            'q'     => $openWeatherMapConfig['cityId'],
+            'id'    => $openWeatherMapConfig['cityId'],
+            'units' => $openWeatherMapConfig['units'],
         ]);
 
         /**
          * @var StorageInterface $storageAdapter
          */
-        $storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
+        //$storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
+        $storageAdapter = new BlackHole();
 
         $service = new OpenWeatherMapProvider(
             $weatherClient,

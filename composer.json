@@ -19,7 +19,8 @@
       "Application\\": "module/Application/src/",
       "Redis\\": "module/Redis/src/",
       "Api\\": "module/Api/src/",
-      "Components\\": "module/Components/src/"
+      "Components\\": "module/Components/src/",
+      "Weather\\": "module/Weather/src/"
     }
   }
 }

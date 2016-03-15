@@ -10,19 +10,18 @@ use Weather\Service\Factories\OpenWeatherMapProviderFactory;
 return [
     'weather' => [
         'openWeatherMap' => [
-            'weatherUrl'    => 'api.openweathermap.org/data/2.5/weather',
-            'forecastUrl'   => 'api.openweathermap.org/data/2.5/forecast',
+            'weatherUrl'    => 'http://api.openweathermap.org/data/2.5/weather',
+            'forecastUrl'   => 'http://api.openweathermap.org/data/2.5/forecast',
+            'units'         => '',
             'cityId'        => '',
             'apiKey'        => '',
             'clientOptions' => [],
         ],
     ],
 
-    'service_mananager' => [
-        'services' => [
-            'factories' => [
-                'Weather/Service/OpenWeatherMapProvider' => OpenWeatherMapProviderFactory::class,
-            ],
+    'service_manager' => [
+        'factories' => [
+            'Weather/Service/OpenWeatherMapProvider' => OpenWeatherMapProviderFactory::class,
         ],
     ],
 ];

@@ -10,6 +10,7 @@ return [
         'Application',
         'Redis',
         'Api',
+        'Weather',
 
         'EnliteMonolog',
     ],

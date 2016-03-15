@@ -26,8 +26,9 @@ class IndexControllerFactory implements FactoryInterface
     {
         $logger = $serviceLocator->getServiceLocator()->get('EnliteMonologService');
         $weatherProviderInterface = $serviceLocator->getServiceLocator()->get('Weather/Service/OpenWeatherMapProvider');
+        $forecastProviderInterface = $serviceLocator->getServiceLocator()->get('Weather/Service/OpenWeatherMapProvider');
 
-        $service = new IndexController($logger, $weatherProviderInterface);
+        $service = new IndexController($logger, $weatherProviderInterface, $forecastProviderInterface);
 
         return $service;
     }

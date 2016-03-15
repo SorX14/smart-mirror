@@ -43,25 +43,43 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
 
     public function getWeather()
     {
+        if ($this->weather == '') {
+            $this->weather = $this->updateWeather();
+        }
 
+        error_log(print_r($this->weather, true));
+
+        return $this->weather;
     }
 
     public function updateWeather()
     {
         $result = $this->weatherClient->send();
 
-        return $result;
+        if ($result->getStatusCode() == 200) {
+            return json_decode($result->getBody());
+        } else {
+            throw new \Exception ('Failed to update weather information');
+        }
     }
 
     public function getForecast()
     {
-        // TODO: Implement getForecast() method.
+        if ($this->forecast == '') {
+            //$this->forecast = $this->updateForecast();
+        }
+
+        return $this->forecast;
     }
 
     public function updateForecast()
     {
         $result = $this->forecastClient->send();
 
-        return $result;
+        if ($result->getStatusCode() == 200) {
+            return json_decode($result->getBody());
+        } else {
+            throw new \Exception ('Failed to update forecast information');
+        }
     }
 }
