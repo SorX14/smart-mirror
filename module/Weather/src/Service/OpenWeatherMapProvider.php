@@ -8,8 +8,10 @@
 namespace Weather\Service;
 
 
+use Weather\Hydrators\OpenWeatherMap\WindHydrator;
 use Weather\Interfaces\ForecastProviderInterface;
 use Weather\Interfaces\WeatherProviderInterface;
+use Weather\Models\Wind;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Http\Client;
 
@@ -47,7 +49,14 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
             $this->weather = $this->updateWeather();
         }
 
-        error_log(print_r($this->weather, true));
+        // http://framework.zend.com/manual/current/en/modules/zend.stdlib.hydrator.aggregate.html
+        // Use bespoke hydrators to decouple the link between provider and the underlying object tree
+
+        $wind = new Wind();
+        $hydrator = new WindHydrator();
+        $hydrator->hydrate($this->weather['wind'], $wind);
+
+        error_log(print_r($wind, true));
 
         return $this->weather;
     }
@@ -57,7 +66,7 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         $result = $this->weatherClient->send();
 
         if ($result->getStatusCode() == 200) {
-            return json_decode($result->getBody());
+            return json_decode($result->getBody(), true);
         } else {
             throw new \Exception ('Failed to update weather information');
         }
@@ -77,7 +86,7 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         $result = $this->forecastClient->send();
 
         if ($result->getStatusCode() == 200) {
-            return json_decode($result->getBody());
+            return json_decode($result->getBody(), true);
         } else {
             throw new \Exception ('Failed to update forecast information');
         }
