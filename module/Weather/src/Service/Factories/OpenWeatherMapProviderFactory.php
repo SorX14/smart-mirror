@@ -55,7 +55,7 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
          */
         $storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
         //$storageAdapter = new BlackHole();
-
+        
         $hydrator = new WeatherHydrator();
 
         $service = new OpenWeatherMapProvider(

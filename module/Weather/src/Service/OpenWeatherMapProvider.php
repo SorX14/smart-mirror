@@ -44,8 +44,7 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         Client $weatherClient,
         Client $forecastClient,
         StorageInterface $storageInterface,
-        WeatherHydrator $weatherHydrator
-    )
+        WeatherHydrator $weatherHydrator)
     {
         $this->weatherClient = $weatherClient;
         $this->forecastClient = $forecastClient;
@@ -77,7 +76,6 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         if ($result->getStatusCode() == 200) {
             $weather = $this->weatherHydrator->hydrate(json_decode($result->getBody()));
             $this->storageInterface->setItem('weather', $weather);
-
             return $weather;
         } else {
             throw new \Exception ('Failed to update weather information');

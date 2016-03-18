@@ -62,9 +62,8 @@ abstract class ComponentAbstract implements ComponentInterface
     {
         return $this->name;
     }
-
-    public function setName($name)
-    {
+    
+    public function setName($name) {
         $this->name = $name;
     }
 }

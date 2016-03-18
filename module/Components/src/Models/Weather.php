@@ -40,7 +40,7 @@ class Weather extends ComponentAbstract
             $this->weather = $this->weatherProviderInterface->getWeather();
             $this->forecast = $this->forecastProviderInterface->getForecast();
         } catch (\Exception $e) {
-
+            
         }
     }
 }

@@ -50,20 +50,18 @@ var SmContainer = React.createClass({
     render: function () {
         var elements = this.state.data.modules.map(function (element) {
             return (
-                < SmComponentContainer;
+                <SmComponentContainer
                     key={element.id}
                     {...element}
                 >
-            </
-            SmComponentContainer >;
-            )
+                </SmComponentContainer>
+            );
         });
         return (
-            < div;
-        className = "componentContainer" >
+            <div className="componentContainer">
                 {elements}
-            < / div >;
-        )
+            </div>
+        );
     }
 });
 
@@ -78,29 +76,19 @@ var SmComponentContainer = React.createClass({
 
         switch (this.props.name) {
             case 'clock':
-                component = ( < ComponentClock;
-            {...
-                this.props
-            }
-            />)
+                component = (<ComponentClock {...this.props} />);
                 break;
 
             case 'compliment':
-                component = ( < ComponentCompliment;
-            {...
-                this.props
-            }
-            />)
+                component = (<ComponentCompliment {...this.props} />);
                 break;
         }
 
         return (
-            < div;
-        className = "componentContainerModule";
-        style = {inlineStyle} >
+            <div className="componentContainerModule" style={inlineStyle}>
                 {component}
-            < / div >;
-        )
+            </div>
+        );
     }
 });
 
@@ -126,36 +114,26 @@ var ComponentClock = React.createClass({
     },
     render: function () {
         return (
-            < div;
-        className = "componentClock" >
-            < span;
-        className = "date dim" > {this.state.date
-    }</
-        span >
-        < span;
-        className = "time" > {this.state.time
-    }</
-        span >
-        < / div >;
-        )
+            <div className="componentClock">
+                <span className="date dim">{this.state.date}</span>
+                <span className="time">{this.state.time}</span>
+            </div>
+        );
     }
 });
 
 var ComponentCompliment = React.createClass({
     render: function () {
         return (
-            < div;
-        className = "componentCompliment" >
+            <div className="componentCompliment">
                 {this.props.text}
-        </
-        div >;
-        )
+            </div>
+        );
     }
 });
 
 
 ReactDom.render(
-< SmContainer;
-url = "/api/layout" / >,
-    document.getElementById('content');
-)
+    <SmContainer url="/api/layout" />,
+    document.getElementById('content')
+);

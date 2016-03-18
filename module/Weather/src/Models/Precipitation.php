@@ -33,5 +33,5 @@ class Precipitation
     {
         $this->value = $value;
     }
-
+    
 }
