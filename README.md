@@ -4,6 +4,11 @@ Raspberry Pi smart mirror code
 
 # Installation on Raspberry Pi
 
+Make sure everything is up-to-date
+
+    sudo apt-get update
+    sudo apt-get upgrade
+
 Install Apache2
 
     sudo apt-get install apache2 -y
