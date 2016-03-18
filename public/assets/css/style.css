@@ -20,6 +20,7 @@ body {
 .componentContainerModule {
     display: inline-block;
     position: absolute;
+    background: #2ca02cEE;
 }
 
 .componentContainerModule h1 {

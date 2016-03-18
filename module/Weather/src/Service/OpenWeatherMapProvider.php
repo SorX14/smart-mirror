@@ -8,10 +8,9 @@
 namespace Weather\Service;
 
 
-use Weather\Hydrators\OpenWeatherMap\WindHydrator;
+use Weather\Hydrators\OpenWeatherMap\WeatherHydrator;
 use Weather\Interfaces\ForecastProviderInterface;
 use Weather\Interfaces\WeatherProviderInterface;
-use Weather\Models\Wind;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Http\Client;
 
@@ -33,40 +32,53 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
      */
     protected $storageInterface;
 
+    /**
+     * @var \Weather\Hydrators\OpenWeatherMap\WeatherHydrator
+     */
+    protected $weatherHydrator;
+
     protected $weather;
     protected $forecast;
 
-    public function __construct(Client $weatherClient, Client $forecastClient, StorageInterface $storageInterface)
+    public function __construct(
+        Client $weatherClient,
+        Client $forecastClient,
+        StorageInterface $storageInterface,
+        WeatherHydrator $weatherHydrator
+    )
     {
         $this->weatherClient = $weatherClient;
         $this->forecastClient = $forecastClient;
         $this->storageInterface = $storageInterface;
+        $this->weatherHydrator = $weatherHydrator;
     }
 
+    /**
+     * @return \Weather\Models\Weather
+     * @throws \Exception
+     */
     public function getWeather()
     {
-        if ($this->weather == '') {
-            $this->weather = $this->updateWeather();
+        if (!$this->storageInterface->hasItem('weather')) {
+            $this->updateWeather();
         }
 
-        // http://framework.zend.com/manual/current/en/modules/zend.stdlib.hydrator.aggregate.html
-        // Use bespoke hydrators to decouple the link between provider and the underlying object tree
-
-        $wind = new Wind();
-        $hydrator = new WindHydrator();
-        $hydrator->hydrate($this->weather['wind'], $wind);
-
-        error_log(print_r($wind, true));
-
-        return $this->weather;
+        return $this->storageInterface->getItem('weather');
     }
 
+    /**
+     * @return \Weather\Models\Weather
+     * @throws \Exception
+     */
     public function updateWeather()
     {
         $result = $this->weatherClient->send();
 
         if ($result->getStatusCode() == 200) {
-            return json_decode($result->getBody(), true);
+            $weather = $this->weatherHydrator->hydrate(json_decode($result->getBody()));
+            $this->storageInterface->setItem('weather', $weather);
+
+            return $weather;
         } else {
             throw new \Exception ('Failed to update weather information');
         }
@@ -74,11 +86,9 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
 
     public function getForecast()
     {
-        if ($this->forecast == '') {
-            //$this->forecast = $this->updateForecast();
-        }
+        $forecast = $this->updateForecast();
 
-        return $this->forecast;
+        print_r($forecast);
     }
 
     public function updateForecast()

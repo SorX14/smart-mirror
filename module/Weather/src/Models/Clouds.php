@@ -19,13 +19,6 @@ class Clouds
     public $value;
 
     /**
-     * Name of the cloudiness
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
      * @return string
      */
     public function getValue()
@@ -40,22 +33,5 @@ class Clouds
     {
         $this->value = $value;
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
 
 }

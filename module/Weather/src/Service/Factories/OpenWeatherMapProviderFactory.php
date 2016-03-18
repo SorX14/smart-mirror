@@ -8,8 +8,8 @@
 namespace Weather\Service\Factories;
 
 
+use Weather\Hydrators\OpenWeatherMap\WeatherHydrator;
 use Weather\Service\OpenWeatherMapProvider;
-use Zend\Cache\Storage\Adapter\BlackHole;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Http\Client;
 use Zend\ServiceManager\FactoryInterface;
@@ -53,13 +53,16 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
         /**
          * @var StorageInterface $storageAdapter
          */
-        //$storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
-        $storageAdapter = new BlackHole();
+        $storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
+        //$storageAdapter = new BlackHole();
+
+        $hydrator = new WeatherHydrator();
 
         $service = new OpenWeatherMapProvider(
             $weatherClient,
             $forecastClient,
-            $storageAdapter
+            $storageAdapter,
+            $hydrator
         );
 
         return $service;

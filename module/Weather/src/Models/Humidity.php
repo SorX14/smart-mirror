@@ -25,4 +25,35 @@ class Humidity
      */
     public $units;
 
+    /**
+     * @return float
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param float $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnits()
+    {
+        return $this->units;
+    }
+
+    /**
+     * @param string $units
+     */
+    public function setUnits($units)
+    {
+        $this->units = $units;
+    }
 }

@@ -50,18 +50,20 @@ var SmContainer = React.createClass({
     render: function () {
         var elements = this.state.data.modules.map(function (element) {
             return (
-                <SmComponentContainer
+                < SmComponentContainer;
                     key={element.id}
                     {...element}
                 >
-                </SmComponentContainer>
-            );
+            </
+            SmComponentContainer >;
+            )
         });
         return (
-            <div className="componentContainer">
+            < div;
+        className = "componentContainer" >
                 {elements}
-            </div>
-        );
+            < / div >;
+        )
     }
 });
 
@@ -75,20 +77,30 @@ var SmComponentContainer = React.createClass({
         var component;
 
         switch (this.props.name) {
-            case 'Clock':
-                component = (<ComponentClock {...this.props} />);
+            case 'clock':
+                component = ( < ComponentClock;
+            {...
+                this.props
+            }
+            />)
                 break;
 
-            case 'Compliment':
-                component = (<ComponentCompliment {...this.props} />);
+            case 'compliment':
+                component = ( < ComponentCompliment;
+            {...
+                this.props
+            }
+            />)
                 break;
         }
 
         return (
-            <div className="componentContainerModule" style={inlineStyle}>
+            < div;
+        className = "componentContainerModule";
+        style = {inlineStyle} >
                 {component}
-            </div>
-        );
+            < / div >;
+        )
     }
 });
 
@@ -99,16 +111,14 @@ var ComponentClock = React.createClass({
     },
     getInitialState: function () {
         return {
-            seconds: 0,
-            date: moment().format(this.props.dateFormat),
-            time: moment().format(this.props.timeFormat)
+            date: moment().format('dddd, D MMMM YYYY'),
+            time: moment().format('HH:mm')
         };
     },
     tick: function () {
         this.setState({
-            seconds: this.state.seconds + 1,
-            date: moment().format(this.props.dateFormat),
-            time: moment().format(this.props.timeFormat)
+            date: moment().format('dddd, D MMMM YYYY'),
+            time: moment().format('HH:mm')
         });
     },
     componentDidMount: function () {
@@ -116,26 +126,36 @@ var ComponentClock = React.createClass({
     },
     render: function () {
         return (
-            <div className="componentClock">
-                <span className="date dim">{this.state.date}</span>
-                <span className="time">{this.state.time}</span>
-            </div>
-        );
+            < div;
+        className = "componentClock" >
+            < span;
+        className = "date dim" > {this.state.date
+    }</
+        span >
+        < span;
+        className = "time" > {this.state.time
+    }</
+        span >
+        < / div >;
+        )
     }
 });
 
 var ComponentCompliment = React.createClass({
     render: function () {
         return (
-            <div className="componentCompliment">
+            < div;
+        className = "componentCompliment" >
                 {this.props.text}
-            </div>
-        );
+        </
+        div >;
+        )
     }
 });
 
 
 ReactDom.render(
-    <SmContainer url="/api/layout" />,
-    document.getElementById('content')
-);
+< SmContainer;
+url = "/api/layout" / >,
+    document.getElementById('content');
+)

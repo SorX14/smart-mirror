@@ -8,9 +8,7 @@
 namespace Api\Controller;
 
 
-use Components\Models\Clock;
-use Components\Models\Compliment;
-use Components\Models\Weather;
+use Components\Models\Component;
 use Psr\Log\LoggerInterface;
 use Weather\Interfaces\ForecastProviderInterface;
 use Weather\Interfaces\WeatherProviderInterface;
@@ -48,20 +46,20 @@ class IndexController extends AbstractActionController
 
     public function layoutAction()
     {
-        $clock = new Clock();
+        $clock = new Component();
+        $clock->setName('clock');
         $clock->setId(1);
         $clock->position->setX(0);
         $clock->position->setY(0);
 
-        $compliment = new Compliment();
+        $compliment = new Component();
+        $compliment->setName('compliment');
         $compliment->setId(2);
         $compliment->position->setX(100);
         $compliment->position->setY(400);
 
-        $weather = new Weather(
-            $this->weatherProviderInterface,
-            $this->forecastProviderInterface
-        );
+        $weather = new Component();
+        $weather->setName('weather');
         $weather->setId(3);
         $weather->position->setX(400);
         $weather->position->setY(0);

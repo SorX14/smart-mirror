@@ -19,13 +19,6 @@ class Precipitation
     public $value;
 
     /**
-     * Possible values are 'no', name of weather phenomena as 'rain', 'snow'
-     *
-     * @var string
-     */
-    public $mode;
-
-    /**
      * @return float
      */
     public function getValue()
@@ -40,22 +33,5 @@ class Precipitation
     {
         $this->value = $value;
     }
-
-    /**
-     * @return string
-     */
-    public function getMode()
-    {
-        return $this->mode;
-    }
-
-    /**
-     * @param string $mode
-     */
-    public function setMode($mode)
-    {
-        $this->mode = $mode;
-    }
-
 
 }

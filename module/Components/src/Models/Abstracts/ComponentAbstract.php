@@ -10,7 +10,6 @@ namespace Components\Models\Abstracts;
 
 use Components\Models\Interfaces\ComponentInterface;
 use Components\Models\Position;
-use ReflectionClass;
 
 abstract class ComponentAbstract implements ComponentInterface
 {
@@ -36,8 +35,6 @@ abstract class ComponentAbstract implements ComponentInterface
 
     public function __construct()
     {
-        $reflect = new ReflectionClass($this);
-        $this->name = $reflect->getShortName();
         $this->position = new Position();
     }
 
@@ -64,5 +61,10 @@ abstract class ComponentAbstract implements ComponentInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }

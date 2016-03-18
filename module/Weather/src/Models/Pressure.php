@@ -19,11 +19,11 @@ class Pressure
     public $value;
 
     /**
-     * Unit
+     * Units
      *
      * @var string
      */
-    public $unit;
+    public $units;
 
     /**
      * @return float
@@ -44,17 +44,17 @@ class Pressure
     /**
      * @return string
      */
-    public function getUnit()
+    public function getUnits()
     {
-        return $this->unit;
+        return $this->units;
     }
 
     /**
-     * @param string $unit
+     * @param string $units
      */
-    public function setUnit($unit)
+    public function setUnits($units)
     {
-        $this->unit = $unit;
+        $this->units = $units;
     }
 
 
