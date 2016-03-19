@@ -7,6 +7,7 @@ var ReactDom = require('react-dom');
 var marked = require('marked');
 var $ = jQuery = require('jquery');
 var moment = require('moment');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 //var bootstrap = require('bootstrap');
 
 // SetInterval mixin, allowing timed events to occur
@@ -24,7 +25,6 @@ var SetIntervalMixin = {
 
 // This will be the components that controls whats shown
 var SmContainer = React.createClass({
-    mixins: [SetIntervalMixin],
     loadLayoutFromServer: function () {
         $.ajax({
             url: this.props.url,
@@ -45,7 +45,6 @@ var SmContainer = React.createClass({
     },
     componentDidMount: function () {
         this.loadLayoutFromServer();
-        this.setInterval(this.loadLayoutFromServer, 5000);
     },
     render: function () {
         var elements = this.state.data.modules.map(function (element) {
@@ -82,6 +81,10 @@ var SmComponentContainer = React.createClass({
             case 'compliment':
                 component = (<ComponentCompliment {...this.props} />);
                 break;
+
+            case 'weather':
+                component = (<ComponentWeather {...this.props} />);
+                break;
         }
 
         return (
@@ -110,28 +113,90 @@ var ComponentClock = React.createClass({
         });
     },
     componentDidMount: function () {
-        this.setInterval(this.tick, 1000);
+        this.setInterval(this.tick, this.props.provider.updateRate);
     },
     render: function () {
+        // In order to animate in place, change the key, and make the element absolute
         return (
-            <div className="componentClock">
-                <span className="date dim">{this.state.date}</span>
-                <span className="time">{this.state.time}</span>
-            </div>
+            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+                <div className="componentClock" key={moment().format('ss')}>
+                    <span className="date dim">{this.state.date}</span>
+                    <span className="time">{this.state.time}</span>
+                </div>
+            </ReactCSSTransitionGroup>
         );
     }
 });
 
 var ComponentCompliment = React.createClass({
+    mixins: [SetIntervalMixin],
+    componentDidMount: function () {
+        this.loadFromServer();
+        this.setInterval(this.loadFromServer, this.props.provider.updateRate);
+    },
+    getInitialState: function () {
+        return {
+            data: {
+                text: 'Mirror, mirror on the wall'
+            }
+        }
+    },
+    loadFromServer: function () {
+        $.ajax({
+            url: this.props.provider.url,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({data: { text: data.compliment.text }});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.provider.url, status, err.toString());
+            }.bind(this)
+        });
+    },
     render: function () {
         return (
-            <div className="componentCompliment">
-                {this.props.text}
-            </div>
+            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+                <div className="componentCompliment" key={this.state.data.text}>
+                    {this.state.data.text}
+                </div>
+            </ReactCSSTransitionGroup>
         );
     }
 });
 
+var ComponentWeather = React.createClass({
+    mixins: [SetIntervalMixin],
+    componentDidMount: function () {
+        this.loadFromServer();
+        this.setInterval(this.loadFromServer, this.props.provider.updateRate);
+    },
+    getInitialState: function () {
+        return {};
+    },
+    loadFromServer: function () {
+        $.ajax({
+            url: this.props.provider.url,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState(data);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.provider.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    render: function () {
+        return (
+            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+                <div className="componentWeather">
+                    WEATHER
+                </div>
+            </ReactCSSTransitionGroup>
+        );
+    }
+});
 
 ReactDom.render(
     <SmContainer url="/api/layout" />,

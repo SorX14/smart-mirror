@@ -12,7 +12,7 @@ use Components\Models\Abstracts\ComponentAbstract;
 use Weather\Interfaces\ForecastProviderInterface;
 use Weather\Interfaces\WeatherProviderInterface;
 
-class Weather extends ComponentAbstract
+class Weather
 {
 
     public $weather;
@@ -31,7 +31,6 @@ class Weather extends ComponentAbstract
         ForecastProviderInterface $forecastProviderInterface
     )
     {
-        parent::__construct();
 
         $this->weatherProviderInterface = $weatherProviderInterface;
         $this->forecastProviderInterface = $forecastProviderInterface;

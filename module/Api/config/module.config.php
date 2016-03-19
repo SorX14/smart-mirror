@@ -27,6 +27,39 @@ return [
                             ],
                         ],
                     ],
+                    
+                    'weather' => [
+                        'type' => 'Literal',
+                        'options' => [
+                            'route' => '/weather',
+                            'defaults' => [
+                                'controller' => 'Api\Controller\Api',
+                                'action' => 'weather',
+                            ],
+                        ],
+                    ],
+                    
+                    'compliment' => [
+                        'type' => 'Literal',
+                        'options' => [
+                            'route' => '/compliment',
+                            'defaults' => [
+                                'controller' => 'Api\Controller\Api',
+                                'action' => 'compliment',
+                            ],
+                        ],
+                    ],
+                    
+                    'energy' => [
+                        'type' => 'Literal',
+                        'options' => [
+                            'route' => '/energy',
+                            'defaults' => [
+                                'controller' => 'Api\Controller\Api',
+                                'action' => 'energy',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],

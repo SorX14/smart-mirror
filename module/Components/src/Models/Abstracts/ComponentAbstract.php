@@ -10,8 +10,9 @@ namespace Components\Models\Abstracts;
 
 use Components\Models\Interfaces\ComponentInterface;
 use Components\Models\Position;
+use Components\Models\Provider;
 
-abstract class ComponentAbstract implements ComponentInterface
+abstract class ComponentAbstract 
 {
     /**
      * @var string Class name
@@ -33,9 +34,15 @@ abstract class ComponentAbstract implements ComponentInterface
      */
     public $position;
 
+    /**
+     * @var Provider
+     */
+    public $provider;
+
     public function __construct()
     {
         $this->position = new Position();
+        $this->provider = new Provider();
     }
 
     public function getId()

@@ -1,27 +1,35 @@
 <?php
 /**
- * User: stephen.parker
- * Date: 13/03/2016
- * Time: 18:34
+ * User: Steve
+ * Date: 19/03/2016
+ * Time: 18:51
  */
 
 namespace Components\Models;
 
 
-use Components\Models\Abstracts\ComponentAbstract;
-
-class Compliment extends ComponentAbstract
+class Compliment
 {
-
     /**
      * @var string
      */
     public $text;
 
-    public function __construct()
+    /**
+     * @return string
+     */
+    public function getText()
     {
-        parent::__construct();
-
-        $this->text = 'String: ' . rand(0, 1000);
+        return $this->text;
     }
+
+    /**
+     * @param string $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+    
+    
 }

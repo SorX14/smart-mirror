@@ -26,8 +26,6 @@ class WeatherHydrator
      */
 
     public function hydrate(\stdClass $input) {
-        print_r($input);
-
         $city = $this->hydrateCity($input);
         $temperature = $this->hydrateTemperature($input);
         $humidity = $this->hydrateHumidity($input);
@@ -51,8 +49,6 @@ class WeatherHydrator
         $weather->setNumber($input->weather[0]->id);
         $weather->setValue($input->weather[0]->main);
         $weather->setIcon($input->weather[0]->icon);
-
-        print_r($weather);
 
         return $weather;
     }

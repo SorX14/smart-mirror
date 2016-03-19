@@ -86,7 +86,9 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
     {
         $forecast = $this->updateForecast();
 
+        echo '<pre>';
         print_r($forecast);
+        echo '</pre>';
     }
 
     public function updateForecast()

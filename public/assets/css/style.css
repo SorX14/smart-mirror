@@ -20,7 +20,11 @@ body {
 .componentContainerModule {
     display: inline-block;
     position: absolute;
-    background: #2ca02cEE;
+    /*background: rgba(255, 0, 0, 0.7);*/
+
+    min-width: 10px;
+    min-height: 10px;
+
 }
 
 .componentContainerModule h1 {
@@ -50,6 +54,16 @@ body {
 
 .dim {
     color: #333;
+}
+
+.componentCompliment {
+    position: absolute;
+    width: 1080px;
+    text-align: center;
+}
+
+.componentClock {
+    position: absolute;
 }
 
 @font-face {
