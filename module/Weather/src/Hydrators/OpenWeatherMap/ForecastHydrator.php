@@ -38,10 +38,23 @@ class ForecastHydrator
         $this->cityHydrator->hydrate($input['city'], $city);
         $object->setCity($city);
 
+        $days = 0;
         foreach ($input['list'] as $v) {
-            //echo '<pre>';
-            //print_r($v);
-            //echo '</pre>';
+            // Ignore days that match today
+            $forecastDate = new \DateTime('@' . $v['dt']);
+            $currentDate = new \DateTime();
+            $currentDate->setTime(12, 00, 00);
+            $difference = $currentDate->getTimestamp() - $forecastDate->getTimestamp();
+
+            if ($difference > 0) {
+                continue;
+            }
+
+            $days++;
+            if ($days > 7) {
+                break;
+            }
+
             $weatherItem = new WeatherItem();
             $this->weatherItemHydrator->hydrate($v, $weatherItem);
             $object->addWeatherItem($weatherItem);

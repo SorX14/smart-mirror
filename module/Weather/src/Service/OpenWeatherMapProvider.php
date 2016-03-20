@@ -44,12 +44,18 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
      */
     protected $forecastHydrator;
 
+    /**
+     * @var boolean
+     */
+    protected $debug = false;
+
     public function __construct(
         Client $weatherClient,
         Client $forecastClient,
         StorageInterface $storageInterface,
         WeatherHydrator $weatherHydrator,
-        ForecastHydrator $forecastHydrator
+        ForecastHydrator $forecastHydrator,
+        $debug = false
     )
     {
         $this->weatherClient = $weatherClient;
@@ -57,15 +63,21 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         $this->storageInterface = $storageInterface;
         $this->weatherHydrator = $weatherHydrator;
         $this->forecastHydrator = $forecastHydrator;
+
+        $this->debug = $debug;
     }
 
     /**
+     * Get the currently cached observation
+     *
      * @return \Weather\Models\Weather
      * @throws \Exception
      */
     public function getWeather()
     {
-        $this->storageInterface->removeItem('weather');
+        if ($this->debug) {
+            $this->storageInterface->removeItem('weather');
+        }
         if (!$this->storageInterface->hasItem('weather')) {
             $this->updateWeather();
         }
@@ -74,6 +86,8 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
     }
 
     /**
+     * Request the latest observation
+     *
      * @return \Weather\Models\Weather
      * @throws \Exception
      */
@@ -94,9 +108,17 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         }
     }
 
+    /**
+     * Get the currently cached forecast
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function getForecast()
     {
-        $this->storageInterface->removeItem('forecast');
+        if ($this->debug) {
+            $this->storageInterface->removeItem('forecast');
+        }
         if (!$this->storageInterface->hasItem('forecast')) {
             $this->updateForecast();
         }
@@ -104,16 +126,18 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         return $this->storageInterface->getItem('forecast');
     }
 
+    /**
+     * Requests the latest forecast
+     *
+     * @return \Weather\Models\Forecast
+     * @throws \Exception
+     */
     public function updateForecast()
     {
         $result = $this->forecastClient->send();
 
         if ($result->getStatusCode() == 200) {
             $json = json_decode($result->getBody(), true);
-
-            echo '<pre>';
-            print_r($json);
-            echo '</pre>';
 
             $forecast = new Forecast();
 

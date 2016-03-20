@@ -50,7 +50,7 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
             'appid' => $openWeatherMapConfig['apiKey'],
             'id'    => $openWeatherMapConfig['cityId'],
             'units' => $openWeatherMapConfig['units'],
-            'cnt'   => 7,
+            'cnt'   => 8, // Get 8 days of forecast because it also includes today sometimes
         ]);
 
         /**
@@ -74,7 +74,8 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
             $forecastClient,
             $storageAdapter,
             $weatherHydrator,
-            $forecastHydrator
+            $forecastHydrator,
+            true // Debug mode
         );
 
         return $service;
