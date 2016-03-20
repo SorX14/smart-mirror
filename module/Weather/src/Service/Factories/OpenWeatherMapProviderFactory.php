@@ -8,6 +8,8 @@
 namespace Weather\Service\Factories;
 
 
+use Weather\Hydrators\OpenWeatherMap\ForecastHydrator;
+use Weather\Hydrators\OpenWeatherMap\WeatherHydrator;
 use Weather\Service\OpenWeatherMapProvider;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Http\Client;
@@ -44,7 +46,6 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
             $openWeatherMapConfig['clientOptions']
         );
 
-        error_log($openWeatherMapConfig['forecastUrl']);
         $forecastClient->setParameterGet([
             'appid' => $openWeatherMapConfig['apiKey'],
             'id'    => $openWeatherMapConfig['cityId'],
@@ -58,7 +59,14 @@ class OpenWeatherMapProviderFactory implements FactoryInterface
         $storageAdapter = $serviceLocator->get('Redis\Cache\Redis');
         //$storageAdapter = new BlackHole();
 
+        /**
+         * @var WeatherHydrator $weatherHydrator
+         */
         $weatherHydrator = $serviceLocator->get('Weather/Hydrators/OpenWeatherMap/WeatherHydrator');
+
+        /**
+         * @var ForecastHydrator $forecastHydrator
+         */
         $forecastHydrator = $serviceLocator->get('Weather/Hydrators/OpenWeatherMap/ForecastHydrator');
 
         $service = new OpenWeatherMapProvider(

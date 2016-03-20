@@ -111,6 +111,10 @@ class OpenWeatherMapProvider implements WeatherProviderInterface, ForecastProvid
         if ($result->getStatusCode() == 200) {
             $json = json_decode($result->getBody(), true);
 
+            echo '<pre>';
+            print_r($json);
+            echo '</pre>';
+
             $forecast = new Forecast();
 
             $this->forecastHydrator->hydrate($json, $forecast);

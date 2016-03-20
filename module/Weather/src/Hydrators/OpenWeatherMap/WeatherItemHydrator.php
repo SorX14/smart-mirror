@@ -29,29 +29,48 @@ class WeatherItemHydrator
         }
 
         $temperature = new Temperature();
-        $temperature->setValue($input['main']['temp']);
-        $temperature->setMin($input['main']['temp_min']);
-        $temperature->setMax($input['main']['temp_max']);
+        $mainRaw = (isset($input['main']) ? $input['main'] : $input);
         $temperature->setUnits('C');
+
+        // Daily forecast is a different format
+        if (isset($input['main'])) {
+            $mainRaw = $input['main'];
+            $temperature->setValue($mainRaw['temp']);
+            $temperature->setMin($mainRaw['temp_min']);
+            $temperature->setMax($mainRaw['temp_max']);
+        } else {
+            $temperature->setValue($mainRaw['temp']['day']);
+            $temperature->setMin($mainRaw['temp']['morn']);
+            $temperature->setMax($mainRaw['temp']['eve']);
+        }
         $object->setTemperature($temperature);
 
         $humidity = new Humidity();
-        $humidity->setValue($input['main']['humidity']);
+        $humidity->setValue($mainRaw['humidity']);
         $humidity->setUnits('%RH');
         $object->setHumidity($humidity);
 
         $pressure = new Pressure();
-        $pressure->setValue($input['main']['pressure']);
+        $pressure->setValue($mainRaw['pressure']);
         $pressure->setUnits('hPa');
         $object->setPressure($pressure);
 
         $wind = new Wind();
-        $wind->setSpeedValue($input['wind']['speed']);
-        $wind->setDirectionValue($input['wind']['deg']);
+        if (isset($input['wind'])) {
+            $wind->setSpeedValue($input['wind']['speed']);
+            $wind->setDirectionValue($input['wind']['deg']);
+        } else {
+            $wind->setSpeedValue($input['speed']);
+            $wind->setDirectionValue($input['deg']);
+        }
         $object->setWind($wind);
 
         $clouds = new Clouds();
-        $clouds->setValue($input['clouds']['all']);
+        if (isset($input['clouds']['all'])) {
+            $clouds->setValue($input['clouds']['all']);
+        } else {
+            $clouds->setValue($input['clouds']);
+        }
         $object->setClouds($clouds);
 
         $precipitation = new Precipitation();

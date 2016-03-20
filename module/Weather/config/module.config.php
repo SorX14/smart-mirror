@@ -17,7 +17,7 @@ return [
         'openWeatherMap' => [
             'weatherUrl'    => 'http://api.openweathermap.org/data/2.5/weather',
             'forecastUrl'   => 'http://api.openweathermap.org/data/2.5/forecast/daily',
-            'units'         => '',
+            'units'         => 'metric',
             'cityId'        => '',
             'apiKey'        => '',
             'clientOptions' => [],

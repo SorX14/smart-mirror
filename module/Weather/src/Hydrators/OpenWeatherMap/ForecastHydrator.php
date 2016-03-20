@@ -39,9 +39,9 @@ class ForecastHydrator
         $object->setCity($city);
 
         foreach ($input['list'] as $v) {
-            echo '<pre>';
-            print_r($v);
-            echo '</pre>';
+            //echo '<pre>';
+            //print_r($v);
+            //echo '</pre>';
             $weatherItem = new WeatherItem();
             $this->weatherItemHydrator->hydrate($v, $weatherItem);
             $object->addWeatherItem($weatherItem);
