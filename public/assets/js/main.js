@@ -95,6 +95,48 @@ var SmComponentContainer = React.createClass({
     }
 });
 
+var ClockDate = React.createClass({
+    getInitialState: function () {
+        return {
+            value: this.props.value
+        };
+    },
+    componentWillReceiveProps: function (incoming) {
+        this.setState(incoming);
+    },
+    render: function () {
+        return (
+            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500}
+                                     transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+                <span className="date dim" key={this.state.value.format('YYYYMMDD')}>
+                    {this.state.value.format('dddd, D MMMM YYYY')}
+                </span>
+            </ReactCSSTransitionGroup>
+        );
+    }
+});
+
+var ClockTime = React.createClass({
+    getInitialState: function () {
+        return {
+            value: this.props.value
+        };
+    },
+    componentWillReceiveProps: function (incoming) {
+        this.setState(incoming);
+    },
+    render: function () {
+        return (
+            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500}
+                                     transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+                <span className="time" key={this.state.value.format('HH:mm')}>
+                    {this.state.value.format('HH:mm')}
+                </span>
+            </ReactCSSTransitionGroup>
+        );
+    }
+});
+
 var ComponentClock = React.createClass({
     mixins: [SetIntervalMixin],
     handleUpdate: function () {
@@ -102,14 +144,12 @@ var ComponentClock = React.createClass({
     },
     getInitialState: function () {
         return {
-            date: moment().format('dddd, D MMMM YYYY'),
-            time: moment().format('HH:mm')
+            dateTime: moment()
         };
     },
     tick: function () {
         this.setState({
-            date: moment().format('dddd, D MMMM YYYY'),
-            time: moment().format('HH:mm')
+            dateTime: moment()
         });
     },
     componentDidMount: function () {
@@ -118,12 +158,14 @@ var ComponentClock = React.createClass({
     render: function () {
         // In order to animate in place, change the key, and make the element absolute
         return (
-            <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <div className="componentClock" key={moment().format('ss')}>
-                    <span className="date dim">{this.state.date}</span>
-                    <span className="time">{this.state.time}</span>
-                </div>
-            </ReactCSSTransitionGroup>
+            <div className="componentClock">
+                <span>
+                    <ClockDate value={this.state.dateTime}/>
+                </span>
+                <span>
+                    <ClockTime value={this.state.dateTime}/>
+                </span>
+            </div>
         );
     }
 });
@@ -165,6 +207,37 @@ var ComponentCompliment = React.createClass({
     }
 });
 
+var WeatherTop = React.createClass({
+    getInitialState: function () {
+        console.log(this.props);
+        return this.props;
+    },
+    componentWillReceiveProps: function (incoming) {
+        this.setState(incoming);
+    },
+    render: function () {
+        return (
+            <div id="weatherTop">
+                <span className="wind">
+                    <span className="wi wi-strong-wind xdimmed"></span>
+                    {this.state.weather.weatherItem.wind.speedValue}
+                </span>
+                <span className="sun">
+                    <span className="wi wi-sunrise xdimmed"></span>
+                </span>
+            </div>
+        );
+    }
+});
+
+var WeatherForecast = React.createClass({
+    render: function () {
+        return (
+            <div id="weatherForecast">WEATHER FORECAST</div>
+        )
+    }
+});
+
 var ComponentWeather = React.createClass({
     mixins: [SetIntervalMixin],
     componentDidMount: function () {
@@ -188,15 +261,27 @@ var ComponentWeather = React.createClass({
         });
     },
     render: function () {
+        var weatherPanel = (
+            <div className="weatherPanel">
+                <div className="weatherTop">
+                    <WeatherTop {...this.state} />
+                </div>
+                <div className="weatherForecast">
+                    <WeatherForecast {...this.state} />
+                </div>
+            </div>
+        );
+
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
                 <div className="componentWeather">
-                    WEATHER
+                    {weatherPanel}
                 </div>
             </ReactCSSTransitionGroup>
         );
     }
 });
+
 
 ReactDom.render(
     <SmContainer url="/api/layout" />,

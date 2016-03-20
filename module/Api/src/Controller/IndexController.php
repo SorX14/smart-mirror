@@ -69,7 +69,7 @@ class IndexController extends AbstractActionController
         $weather = new Component();
         $weather->setName('weather');
         $weather->setId(3);
-        $weather->position->setX(400);
+        $weather->position->setX(600);
         $weather->position->setY(0);
         $weather->provider->setUpdateRate(60000);
         $weather->provider->setUrl('/api/weather');

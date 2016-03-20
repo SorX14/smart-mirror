@@ -1,0 +1,20 @@
+.componentClock {
+    display: inline;
+    position: relative;
+}
+
+.componentClock span.date {
+    font-family: "HelveticaNeue-Medium", sans-serif;
+    display: block;
+    position: absolute;
+    font-size: 40px;
+    width: 1080px;
+}
+
+.componentClock span.time {
+    margin-top: 30px;
+    font-family: "HelveticaNeue-UltraLight", sans-serif;
+    font-size: 200px;
+    position: absolute;
+    width: 1080px;
+}

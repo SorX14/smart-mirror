@@ -8,7 +8,8 @@ body {
     font-size: 10px;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricprecision;
-    zoom: .4;
+    zoom: 1;
+    overflow: hidden;
 }
 
 .globalContainer {
@@ -24,46 +25,16 @@ body {
 
     min-width: 10px;
     min-height: 10px;
-
+    width: 1080px;
 }
 
 .componentContainerModule h1 {
-
     padding: 0;
     margin: 0;
 }
 
-.componentClock {
-
-}
-
-.componentClock span.date {
-    font-family: "HelveticaNeue-Medium", sans-serif;
-    display: block;
-    font-size: 40px;
-}
-
-.componentClock span.time {
-    font-family: "HelveticaNeue-Medium", sans-serif;
-    font-size: 200px;
-}
-
-.componentCompliment {
-    font-size: 100px;
-}
-
 .dim {
     color: #333;
-}
-
-.componentCompliment {
-    position: absolute;
-    width: 1080px;
-    text-align: center;
-}
-
-.componentClock {
-    position: absolute;
 }
 
 @font-face {

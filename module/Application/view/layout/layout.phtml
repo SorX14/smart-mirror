@@ -16,7 +16,12 @@
                                 'href' => $this->basePath() . '/img/favicon.ico',
     ])
         ->prependStylesheet($this->basePath('assets/css/style.css'))
-        ->prependStylesheet($this->basePath('assets/css/animations.css'));
+        ->prependStylesheet($this->basePath('assets/css/animations.css'))
+        ->prependStylesheet($this->basePath('assets/css/compliment.css'))
+        ->prependStylesheet($this->basePath('assets/css/clock.css'))
+        ->prependStylesheet($this->basePath('assets/css/weather.css'))
+        ->prependStylesheet($this->basePath('assets/vendor/weather-icons/css/weather-icons.min.css'))
+        ->prependStylesheet($this->basePath('assets/vendor/weather-icons/css/weather-icons-wind.min.css'));
     ?>
 
     <!-- Scripts -->
