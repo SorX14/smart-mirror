@@ -30,18 +30,12 @@ abstract class ComponentAbstract
     public $id;
 
     /**
-     * @var Position
-     */
-    public $position;
-
-    /**
      * @var Provider
      */
     public $provider;
 
     public function __construct()
     {
-        $this->position = new Position();
         $this->provider = new Provider();
     }
 

@@ -32,10 +32,12 @@ class CityHydrator
         $object->setLocation($gpsCoordinates);
         $object->setName($input['name']);
         if (isset($input['sys']['sunrise'])) {
-            $object->setSunrise(new \DateTime('@' . $input['sys']['sunrise']));
+            //$object->setSunrise(new \DateTime('@' . $input['sys']['sunrise']));
+            $object->setSunrise($input['sys']['sunrise']);
         }
         if (isset($input['sys']['sunset'])) {
-            $object->setSunset(new \DateTime('@' . $input['sys']['sunset']));
+            //$object->setSunset(new \DateTime('@' . $input['sys']['sunset']));
+            $object->setSunset($input['sys']['sunset']);
         }
 
         return $object;

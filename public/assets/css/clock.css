@@ -1,20 +1,25 @@
-.componentClock {
-    display: inline;
+#componentclock {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#componentclock .date {
+    position: relative;
+    width: 300px;
+}
+
+#componentclock .time {
+    position: absolute;
+    top: 30px;
+}
+
+#componentclock .date span, #componentclock .time span {
+    position: absolute;
+    width: 100%;
+}
+
+#componentclock .date .dayname, #componentclock .date .longdate {
     position: relative;
 }
 
-.componentClock span.date {
-    font-family: "HelveticaNeue-Medium", sans-serif;
-    display: block;
-    position: absolute;
-    font-size: 40px;
-    width: 1080px;
-}
-
-.componentClock span.time {
-    margin-top: 30px;
-    font-family: "HelveticaNeue-UltraLight", sans-serif;
-    font-size: 200px;
-    position: absolute;
-    width: 1080px;
-}

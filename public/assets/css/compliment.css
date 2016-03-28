@@ -1,9 +1,12 @@
-.componentCompliment {
-    font-size: 100px;
+#componentcompliment {
+    position: absolute;
+    top: 650px;
+    width: 1920px;
 }
 
-.componentCompliment {
+.compliment {
+    font-size: 50px;
     position: absolute;
     text-align: center;
-    width: 1080px;
+    width: 100%;
 }

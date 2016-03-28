@@ -52,16 +52,12 @@ class IndexController extends AbstractActionController
         $clock = new Component();
         $clock->setName('clock');
         $clock->setId(1);
-        $clock->position->setX(0);
-        $clock->position->setY(0);
         $clock->provider->setUpdateRate(1000);
 
         // Compliment - update every minute
         $compliment = new Component();
         $compliment->setName('compliment');
         $compliment->setId(2);
-        $compliment->position->setX(0);
-        $compliment->position->setY(400);
         $compliment->provider->setUpdateRate(1000);
         $compliment->provider->setUrl('/api/compliment');
 
@@ -69,8 +65,6 @@ class IndexController extends AbstractActionController
         $weather = new Component();
         $weather->setName('weather');
         $weather->setId(3);
-        $weather->position->setX(600);
-        $weather->position->setY(0);
         $weather->provider->setUpdateRate(60000);
         $weather->provider->setUrl('/api/weather');
 
@@ -78,8 +72,6 @@ class IndexController extends AbstractActionController
         $energy = new Component();
         $energy->setName('energy');
         $energy->setId(4);
-        $energy->position->setX(10);
-        $energy->position->setY(1000);
         $energy->provider->setUpdateRate(1000);
         $energy->provider->setUrl('/api/energy');
 

@@ -1,41 +1,82 @@
 body {
-    background: #000;
+    background: #F00;
     color: #FFF;
     font-family: "HelveticaNeue-UltraLight", sans-serif;
     padding: 0;
     margin: 0;
-    letter-spacing: 5px;
-    font-size: 10px;
+    letter-spacing: -2px;
+    font-size: 75px;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricprecision;
     zoom: 1;
-    overflow: hidden;
 }
 
 .globalContainer {
-    width: 1080px;
-    height: 1920px;
-    border: 1px solid #CCC;
+    width: 1920px;
+    height: 1080px;
+    background: #000;
+    position: relative;
 }
 
-.componentContainerModule {
-    display: inline-block;
-    position: absolute;
-    /*background: rgba(255, 0, 0, 0.7);*/
-
-    min-width: 10px;
-    min-height: 10px;
-    width: 1080px;
+.componentContainer {
+    position: relative;
 }
 
-.componentContainerModule h1 {
-    padding: 0;
-    margin: 0;
+.xxsmall,
+.xsmall,
+.small {
+    font-family: "HelveticaNeue-Medium", sans-serif;
+    letter-spacing: 0;
 }
 
-.dim {
-    color: #333;
+.xxsmall {
+    font-size: 15px;
 }
+
+.xxsmall .wi {
+    line-height: 15px;
+}
+
+.xsmall {
+    font-size: 20px;
+}
+
+.xsmall .wi {
+    line-height: 20px;
+}
+
+.small {
+    font-size: 25px;
+}
+
+.small .wi {
+    line-height: 25px;
+}
+
+.medium {
+    font-size: 35px;
+    letter-spacing: -1px;
+    font-family: "HelveticaNeue-Light", sans-serif;
+}
+
+.medium .wi {
+    line-height: 35px;
+}
+
+.xdimmed {
+    color: #666;
+}
+
+.dimmed {
+    color: #aaa;
+}
+
+.light {
+    font-family: "HelveticaNeue-UltraLight", sans-serif;
+}
+
+
+
 
 @font-face {
     font-family: 'HelveticaNeue-UltraLight';

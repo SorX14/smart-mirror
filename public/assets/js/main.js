@@ -66,11 +66,6 @@ var SmContainer = React.createClass({
 
 var SmComponentContainer = React.createClass({
     render: function () {
-        var inlineStyle = {
-            top: this.props.position.y,
-            left: this.props.position.x
-        };
-
         var component;
 
         switch (this.props.name) {
@@ -88,14 +83,21 @@ var SmComponentContainer = React.createClass({
         }
 
         return (
-            <div className="componentContainerModule" style={inlineStyle}>
-                {component}
+            <div className="componentContainerModule" id={"component" + this.props.name}>
+                <div className="componentContainer">
+                    {component}
+                </div>
             </div>
         );
     }
 });
 
 var ClockDate = React.createClass({
+    rawMarkup: function () {
+        //var rawMarkup = this.state.value.format('[<span class="dayname">]dddd,[</span> <span class="longdate">]MMMM Do[</span>]');
+        var rawMarkup = this.state.value.format('[<span class="dayname">]dddd,[</span> <span class="longdate">]MMMM Do[</span>]');
+        return {__html: rawMarkup};
+    },
     getInitialState: function () {
         return {
             value: this.props.value
@@ -108,9 +110,8 @@ var ClockDate = React.createClass({
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500}
                                      transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <span className="date dim" key={this.state.value.format('YYYYMMDD')}>
-                    {this.state.value.format('dddd, D MMMM YYYY')}
-                </span>
+                <span className="dimmed small" key={this.state.value.format('YYYYMMDD')}
+                      dangerouslySetInnerHTML={this.rawMarkup()}/>
             </ReactCSSTransitionGroup>
         );
     }
@@ -129,7 +130,7 @@ var ClockTime = React.createClass({
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500}
                                      transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <span className="time" key={this.state.value.format('HH:mm')}>
+                <span key={this.state.value.format('HH:mm')}>
                     {this.state.value.format('HH:mm')}
                 </span>
             </ReactCSSTransitionGroup>
@@ -158,14 +159,14 @@ var ComponentClock = React.createClass({
     render: function () {
         // In order to animate in place, change the key, and make the element absolute
         return (
-            <div className="componentClock">
-                <span>
+            <span>
+                <div className="date">
                     <ClockDate value={this.state.dateTime}/>
-                </span>
-                <span>
+                </div>
+                <div className="time">
                     <ClockTime value={this.state.dateTime}/>
-                </span>
-            </div>
+                </div>
+            </span>
         );
     }
 });
@@ -199,7 +200,7 @@ var ComponentCompliment = React.createClass({
     render: function () {
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <div className="componentCompliment" key={this.state.data.text}>
+                <div className="compliment" key={this.state.data.text}>
                     {this.state.data.text}
                 </div>
             </ReactCSSTransitionGroup>
@@ -208,32 +209,93 @@ var ComponentCompliment = React.createClass({
 });
 
 var WeatherTop = React.createClass({
+    iconTable: {
+        '01d': 'wi-day-sunny',
+        '02d': 'wi-day-cloudy',
+        '03d': 'wi-cloudy',
+        '04d': 'wi-cloudy-windy',
+        '09d': 'wi-showers',
+        '10d': 'wi-rain',
+        '11d': 'wi-thunderstorm',
+        '13d': 'wi-snow',
+        '50d': 'wi-fog',
+        '01n': 'wi-night-clear',
+        '02n': 'wi-night-cloudy',
+        '03n': 'wi-night-cloudy',
+        '04n': 'wi-night-cloudy',
+        '09n': 'wi-night-showers',
+        '10n': 'wi-night-rain',
+        '11n': 'wi-night-thunderstorm',
+        '13n': 'wi-night-snow',
+        '50n': 'wi-night-alt-cloudy-windy'
+    },
     getInitialState: function () {
-        console.log(this.props);
         return this.props;
     },
     componentWillReceiveProps: function (incoming) {
+        console.log(incoming);
         this.setState(incoming);
     },
     render: function () {
-        return (
-            <div id="weatherTop">
-                <span className="wind">
-                    <span className="wi wi-strong-wind xdimmed"></span>
-                    {this.state.weather.weatherItem.wind.speedValue}
+        if (this.props.hasOwnProperty('weather')) {
+            var srt = this.props.weather.weather.city.sunrise;
+            var sst = this.props.weather.weather.city.sunset;
+            var windMs = this.props.weather.weather.weatherItem.wind.speedValue;
+            var windMph = (windMs * 2.23694).toFixed(1);
+            var currentWeather = this.props.weather.weather.weatherItem;
+            var windDirection = currentWeather.wind.directionValue;
+
+            var now = moment().format('HH:mm');
+            var sunRiseTime = moment.unix(srt).format('HH:mm');
+            var sunSetTime = moment.unix(sst).format('HH:mm');
+
+            var sunPlace = (
+                <span><span className="wi wi-sunrise xdimmed"></span>{sunRiseTime}</span>
+            );
+
+            if (sunRiseTime < now && sunSetTime > now) {
+                sunPlace = (
+                    <span><span className="wi wi-sunset xdimmed"></span>{sunSetTime}</span>
+                );
+            }
+
+            var windSun = (
+                <span className="windSun small dimmed">
+                    <span className="wind">
+                        <span className={"wi wi-wind from-" + windDirection + "-deg xdimmed"}></span>{windMph}
+                    </span>
+                    <span className="sun">
+                        {sunPlace}
+                    </span>
                 </span>
-                <span className="sun">
-                    <span className="wi wi-sunrise xdimmed"></span>
+            );
+
+            var todayWeather = (
+                <span className="today">
+                    <span className={"icon " + this.iconTable[currentWeather.icon] + " dimmed wi"}></span>
+                    <span>{currentWeather.temperature.value.toFixed(0)}&deg;{currentWeather.temperature.units}</span>
                 </span>
-            </div>
-        );
+            );
+
+            return (
+                <div id="weatherTop">
+                    {windSun}
+                    {todayWeather}
+                </div>
+            );
+        } else {
+            return (
+                <div id="weatherTop">
+                </div>
+            );
+        }
     }
 });
 
 var WeatherForecast = React.createClass({
     render: function () {
         return (
-            <div id="weatherForecast">WEATHER FORECAST</div>
+            <div id="weatherForecast"></div>
         )
     }
 });
@@ -274,7 +336,7 @@ var ComponentWeather = React.createClass({
 
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <div className="componentWeather">
+                <div className="weather">
                     {weatherPanel}
                 </div>
             </ReactCSSTransitionGroup>

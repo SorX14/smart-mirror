@@ -28,14 +28,14 @@ class City
     /**
      * Time of sunrise
      *
-     * @var \DateTime
+     * @var int
      */
     public $sunrise;
 
     /**
      * Time of sunset
      *
-     * @var \DateTime
+     * @var int
      */
     public $sunset;
 
@@ -72,7 +72,7 @@ class City
     }
 
     /**
-     * @return \DateTime
+     * @return int
      */
     public function getSunrise()
     {
@@ -80,15 +80,15 @@ class City
     }
 
     /**
-     * @param \DateTime $sunrise
+     * @param int $sunrise
      */
-    public function setSunrise(\DateTime $sunrise)
+    public function setSunrise($sunrise)
     {
         $this->sunrise = $sunrise;
     }
 
     /**
-     * @return \DateTime
+     * @return int
      */
     public function getSunset()
     {
@@ -96,9 +96,9 @@ class City
     }
 
     /**
-     * @param \DateTime $sunset
+     * @param int $sunset
      */
-    public function setSunset(\DateTime $sunset)
+    public function setSunset($sunset)
     {
         $this->sunset = $sunset;
     }
