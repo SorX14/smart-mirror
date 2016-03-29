@@ -20,7 +20,7 @@ class WeatherItemHydrator
 
     public function hydrate(array $input, WeatherItem $object)
     {
-        $object->setTimestamp(new \DateTime('@' . $input['dt']));
+        $object->setTimestamp($input['dt']);
         $object->setNumber($input['weather'][0]['id']);
         $object->setValue($input['weather'][0]['main']);
         $object->setIcon($input['weather'][0]['icon']);

@@ -12,9 +12,9 @@ class WeatherItem
 {
 
     /**
-     * Last time when data was updated
+     * Timestamp that this object covers
      *
-     * @var \DateTime
+     * @var integer
      */
     public $timestamp;
 
@@ -77,7 +77,7 @@ class WeatherItem
     public $icon;
 
     /**
-     * @return \DateTime
+     * @return integer
      */
     public function getTimestamp()
     {
@@ -85,9 +85,9 @@ class WeatherItem
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param integer $timestamp
      */
-    public function setTimestamp(\DateTime $timestamp)
+    public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
     }

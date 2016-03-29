@@ -4,11 +4,9 @@
 
 var React = require('react');
 var ReactDom = require('react-dom');
-var marked = require('marked');
 var $ = jQuery = require('jquery');
 var moment = require('moment');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-//var bootstrap = require('bootstrap');
 
 // SetInterval mixin, allowing timed events to occur
 var SetIntervalMixin = {
@@ -208,67 +206,95 @@ var ComponentCompliment = React.createClass({
     }
 });
 
+var WeatherToday = React.createClass({
+	propTypes: {
+		id: React.PropTypes.number,
+		temperature: React.PropTypes.number,
+		units: React.PropTypes.string,
+		sunriseTime: React.PropTypes.string,
+		sunsetTime: React.PropTypes.string,
+		now: React.PropTypes.string
+	},
+	isDay: function () {
+		if (this.props.sunriseTime < this.props.now && this.props.sunsetTime > this.props.now) {
+			return true;
+		} else {
+			retunr false;
+		}
+	},
+	getIconClass: function () {
+		return 'wi-owm-' + (this.isDay() ? 'day' : 'night') + '-' + this.props.id;
+	}
+	render: function () {
+		return (
+            <span className="today">
+  	          	<span className={"icon " + this.getIconClass() + " dimmed wi"}></span>
+				<span>{this.props.temperature.toFixed(0)}&deg;{this.props.units}</span>
+            </span>
+		);
+	}
+});
+
+var WeatherWind = React.createClass({
+	propTypes: {
+		direction: React.PropTypes.string,
+		speed: React.PropTypes.number
+	},
+	render: function () {
+		return (
+			<span className="wind">
+				<span className={"wi wi-wind from-" + this.props.direction + "-deg xdimmed"}></span>{this.props.speed.toFixed(1)}
+			</span>
+		);		
+	}
+});
+
+var WeatherSunState = React.createClass({
+	propTypes: {
+		sunriseTime: React.PropTypes.string,
+		sunsetTime: React.PropTypes.string,
+		now: React.PropTypes.string,
+	},
+	render: function () {
+		var sun = (
+			<span><span className="wi wi-sunrise xdimmed"></span>{this.props.sunriseTime}</span>
+		);
+
+		if (this.props.sunriseTime < this.props.now && this.props.sunsetTime > this.props.now) {
+			sun = (
+				<span><span className="wi wi-sunset xdimmed"></span>{this.props.sunsetTime}</span>
+			);
+		}
+		
+		return (
+			<span className="sun">{sun}</span>
+		);
+	}
+});
+
 var WeatherTop = React.createClass({
-    iconTable: {
-        '01d': 'wi-day-sunny',
-        '02d': 'wi-day-cloudy',
-        '03d': 'wi-cloudy',
-        '04d': 'wi-cloudy-windy',
-        '09d': 'wi-showers',
-        '10d': 'wi-rain',
-        '11d': 'wi-thunderstorm',
-        '13d': 'wi-snow',
-        '50d': 'wi-fog',
-        '01n': 'wi-night-clear',
-        '02n': 'wi-night-cloudy',
-        '03n': 'wi-night-cloudy',
-        '04n': 'wi-night-cloudy',
-        '09n': 'wi-night-showers',
-        '10n': 'wi-night-rain',
-        '11n': 'wi-night-thunderstorm',
-        '13n': 'wi-night-snow',
-        '50n': 'wi-night-alt-cloudy-windy'
-    },
-    getInitialState: function () {
-        return this.props;
-    },
     componentWillReceiveProps: function (incoming) {
+    	console.log('componentWillReceiveProps');
         console.log(incoming);
-        this.setState(incoming);
     },
     render: function () {
         if (this.props.hasOwnProperty('weather')) {
-            var srt = this.props.weather.weather.city.sunrise;
-            var sst = this.props.weather.weather.city.sunset;
-            var windMs = this.props.weather.weather.weatherItem.wind.speedValue;
-            var windMph = (windMs * 2.23694).toFixed(1);
-            var currentWeather = this.props.weather.weather.weatherItem;
-            var windDirection = currentWeather.wind.directionValue;
-
-            var now = moment().format('HH:mm');
-            var sunRiseTime = moment.unix(srt).format('HH:mm');
-            var sunSetTime = moment.unix(sst).format('HH:mm');
-
-            var sunPlace = (
-                <span><span className="wi wi-sunrise xdimmed"></span>{sunRiseTime}</span>
-            );
-
-            if (sunRiseTime < now && sunSetTime > now) {
-                sunPlace = (
-                    <span><span className="wi wi-sunset xdimmed"></span>{sunSetTime}</span>
-                );
-            }
+            var windMph = (this.props.weather.weather.weatherItem.wind.speedValue * 2.23694),
+    			currentWeather = this.props.weather.weather.weatherItem,
+    			sunriseTime = moment.unix(this.props.weather.weather.city.sunrise).format('HH:mm'),
+    			sunsetTime = moment.unix(this.props.weather.weather.city.sunset).format('HH:mm'),
+    			now = moment().format('HH:mm');
 
             var windSun = (
                 <span className="windSun small dimmed">
-                    <span className="wind">
-                        <span className={"wi wi-wind from-" + windDirection + "-deg xdimmed"}></span>{windMph}
-                    </span>
-                    <span className="sun">
-                        {sunPlace}
-                    </span>
+                	<WeatherWind direction={currentWeather.wind.directionValue} speed={windMph} />
+                    <WeatherSunState sunriseTime={sunriseTime} sunsetTime={sunsetTime} now={now} />
                 </span>
             );
+
+            var todayWeather = (
+            	<WeatherToday id={currentWeather.number} temperature={currentWeather.temperature.value} units={currentWeather.temperature.units} sunriseTime={sunriseTime} sunsetTime={sunsetTime} now={now} />
+        	);
 
             var todayWeather = (
                 <span className="today">
@@ -292,10 +318,31 @@ var WeatherTop = React.createClass({
     }
 });
 
+var WeatherForecastRow = React.createClass({
+	render: function () {	
+		var day = moment.unit(this.props.timestamp).format('ddd');
+		var windMph = (this.props.weather.weather.weatherItem.wind.speedValue * 2.23694);
+		var windIcon = (
+			<WeatherWind direction={this.props.wind.directionValue} speed={windMph} />)
+		;
+
+		return (
+			<span>{windIcon} {day}: {this.props.temperature.value} {this.props.temperature.min} {this.props.temperature.max}</span>
+		);
+	}
+})
+
 var WeatherForecast = React.createClass({
     render: function () {
+
+		var weatherRows = this.props.forecast.map(function (comment) {
+            return (
+            	<WeatherForecastRow ...{this.props} />
+            )
+        }).bind(this);
+        
         return (
-            <div id="weatherForecast"></div>
+            <div id="weatherForecast">{weatherRows}</div>
         )
     }
 });
@@ -307,7 +354,7 @@ var ComponentWeather = React.createClass({
         this.setInterval(this.loadFromServer, this.props.provider.updateRate);
     },
     getInitialState: function () {
-        return {};
+        return { data: null };
     },
     loadFromServer: function () {
         $.ajax({
